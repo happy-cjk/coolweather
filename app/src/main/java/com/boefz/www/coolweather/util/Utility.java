@@ -44,6 +44,7 @@ public class Utility {
                     City city = new City();
                     city.setCityName(cityObject.getString("name"));
                     city.setCityCode(cityObject.getInt("id"));
+                    city.setProvinceId(provinceId);
                     city.save();
                 }
                 return true;
@@ -60,10 +61,10 @@ public class Utility {
             try{
                 JSONArray allCounty = new JSONArray(response);
                 for(int i =0;i<allCounty.length();i++) {
-                    JSONObject CountryObject = allCounty.getJSONObject(i);
+                    JSONObject countryObject = allCounty.getJSONObject(i);
                     County county = new County();
-                    county.setCountryName(CountryObject.getString("name"));
-                    county.setWeatherId(CountryObject.getString("weather_id"));
+                    county.setCountryName(countryObject.getString("name"));
+                    county.setWeatherId(countryObject.getString("weather_id"));
                     county.setCityId(cityId);
                     county.save();
                 }

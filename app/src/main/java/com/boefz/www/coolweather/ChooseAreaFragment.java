@@ -2,9 +2,11 @@ package com.boefz.www.coolweather;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.icu.text.LocaleDisplayNames;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +66,7 @@ public class ChooseAreaFragment extends Fragment {
 
     private int currentLevel;
 
-
+    private static final String TAG = "ChooseAreaFragment";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,7 +92,10 @@ public class ChooseAreaFragment extends Fragment {
                     selectedProvince = provinceList.get(position);
                     queryCities();
                 }else if(currentLevel == LEVEL_CITY){
+                    Log.d(TAG, "onItemClick: 1-"+ position);
                     selectedCity = cityList.get(position);
+                    Log.d(TAG, "onItemClick: 2-"+ selectedCity.getCityName());
+                    Log.d(TAG, "onItemClick: 3-"+ selectedCity.getId());
                     queryCounties();
                 }
             }
@@ -105,7 +110,7 @@ public class ChooseAreaFragment extends Fragment {
                 }
             }
         });
-        queryProvinces();
+        queryProvinces();     //初始化
 
     }
 
@@ -129,6 +134,8 @@ public class ChooseAreaFragment extends Fragment {
 
     private void queryCities(){
         titleText.setText(selectedProvince.getProvinceName());
+        Log.d(TAG, "queryCities: 1-"+ selectedProvince.getProvinceName());
+        Log.d(TAG, "queryCities: 2-"+ selectedProvince.getId());
         backButton.setVisibility(View.VISIBLE);
         cityList = DataSupport.where("provinceid=?",String.valueOf
                 (selectedProvince.getId())).find(City.class);
@@ -150,8 +157,9 @@ public class ChooseAreaFragment extends Fragment {
     private void queryCounties(){
         titleText.setText(selectedCity.getCityName());
         backButton.setVisibility(View.VISIBLE);
-        countyList = DataSupport.where("cityid=?",String.valueOf
-                (selectedCity.getId())).find(County.class);
+        Log.d(TAG, "queryCounties: 2-" + selectedCity.getCityName());
+        Log.d(TAG, "queryCounties: 3-" + selectedCity.getId());
+        countyList = DataSupport.where("cityid=?",String.valueOf(selectedCity.getId())).find(County.class);
         if(countyList.size()>0){
             dataList.clear();
             for(County county:countyList){
