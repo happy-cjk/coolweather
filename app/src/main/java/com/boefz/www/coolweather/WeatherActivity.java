@@ -1,5 +1,6 @@
 package com.boefz.www.coolweather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.boefz.www.coolweather.gson.Forecast;
 import com.boefz.www.coolweather.gson.Weather;
+import com.boefz.www.coolweather.service.AutoUpdateService;
 import com.boefz.www.coolweather.util.HttpUtil;
 import com.boefz.www.coolweather.util.Utility;
 import com.bumptech.glide.Glide;
@@ -223,6 +225,10 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(sport);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+
+        //启动服务
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 
     private void loadBingPic(){
